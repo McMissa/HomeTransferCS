@@ -25,6 +25,22 @@ namespace HomeTransfer
         {
             InitializeComponent();
             form1 = this;
+            HomeTransferServerData local = HomeTransferModel.getInstance().getLocalHomeTransferData();
+            this.Text = local.name + "@" + local.IP;
+            this.listBox1.AllowDrop = true;
+            this.listBox1.DragDrop += listBox1_DragDrop;
+            this.listBox1.DragEnter += listBox1_DragEnter;
+        }
+
+        private void listBox1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        private void listBox1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            HomeTransferModel.getInstance().addFiles(files);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -81,7 +97,6 @@ namespace HomeTransfer
             HomeTransferController.getInstance().refreshList();
         }
 
-        private int counter = 0;
         public void updateGUI()
         {
             listBox1.Invoke((MethodInvoker)(() => {
@@ -101,7 +116,7 @@ namespace HomeTransfer
                     listBox2.Items.Add(server);
                 }
             }));
-        }
 
+        }
     }
 }

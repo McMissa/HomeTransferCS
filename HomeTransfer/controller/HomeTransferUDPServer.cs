@@ -49,7 +49,9 @@ namespace HomeTransfer.controller
                             HomeTransferController.getInstance().broadcastUDP("response");
                         }
                     }
-                } catch (Exception e)
+                    HomeTransferController.getInstance().updateObserver();
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine("UDP listening finished.");
                 }
